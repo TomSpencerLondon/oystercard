@@ -23,8 +23,9 @@ describe Oystercard do
 
     it 'raises an error if the maximum balance is exceeded' do
       maximum_balance = Oystercard::MAXIMUM_BALANCE
-      subject.top_up(maximum_balance)
-      expect{ subject.top_up(1)}.to raise_error 'Maximum balance exceeded'
+      oyster.top_up(maximum_balance)
+      oyster.balance
+      expect{ oyster.top_up(1) }.to raise_error("Maximum balance exceeded")
     end
 
   end
@@ -41,10 +42,22 @@ describe Oystercard do
 
 
     describe '#touch_in' do
-
+      let(:station) {double :station}
       it "touches the user in and marks as on_journey" do
-        oyster.touch_in
-        expect(oyster.in_use).to be(true)
+        oyster.balance = 10
+        oyster.touch_in(station)
+        expect(oyster.in_journey?).to be(true)
+      end
+
+      it "raises an error if the user doesn't touch in" do
+        oyster.balance = 0
+        expect { oyster.touch_in(station)}.to raise_error("Insufficient balance to touch in")
+      end
+
+      it "remembers the entry station after touch in" do
+        oyster.balance = 10
+        oyster.touch_in(station)
+        expect(oyster.entry_station).to eq(station)
       end
 
     end
@@ -53,9 +66,15 @@ describe Oystercard do
 
       it "touches the user out and marks as not on_journey" do
         oyster.touch_out
-        expect(oyster.in_use).to be(false)
+        expect(oyster.in_journey?).to be(false)
+      end
+
+      it "deducts the minimum fare from the card" do
+
+        expect {oyster.touch_out}.to change{oyster.balance}.by(-Oystercard::MINIMUM_CHARGE)
       end
 
     end
+
 
 end

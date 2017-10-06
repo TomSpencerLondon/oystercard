@@ -88,4 +88,28 @@ describe Oystercard do
       end
     end
   end
+
+  describe '#journeys' do
+
+    it 'has an empty list of journeys' do
+      #expect(oyster.journeys).to be([])
+      expect(oyster.journeys).to be_empty
+    end
+  end
+
+  describe '#journey' do
+
+    let(:journey) { {entry_station:  entry_station, exit_station: exit_station} }
+    before do
+      oyster.top_up(10)
+    end
+    it 'stores a journey' do
+
+      oyster.touch_in(entry_station)
+      oyster.touch_out(exit_station)
+      expect(oyster.journey).to eq(journey)
+
+    end
+  end
+
 end

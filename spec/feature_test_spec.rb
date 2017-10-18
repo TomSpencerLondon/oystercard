@@ -1,4 +1,27 @@
-# require 'oystercard'
+require './lib/oystercard'
+require './lib/journey'
+require './lib/station'
+
+oystercard = Oystercard.new
+journey = Journey.new
+station = Station.new("Aldgate East", 1)
+
+oystercard.top_up(20)
+
+journey.start_journey(station)
+journey.journey_end("Victoria")
+
+journey.fare
+
+
+# # tests for edge case: no touch out
+# p oystercard.top_up(10)
+# p oystercard.touch_in(station)
+# p oystercard.touch_in(station)
+# p oystercard.balance
+#
+
+
 # # # # # In order to use public transport
 # # # # # As a customer
 # # # # # I want money on my card

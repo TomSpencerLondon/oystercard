@@ -2,17 +2,14 @@ class Oystercard
   MAXIMUM_BALANCE = 90
   DEFAULT_BALANCE = 0
   MINIMUM_CHARGE = 1
+  PENALTY_FARE = 6
 
-  attr_accessor :balance, :in_use, :entry_station, :exit_station, :journeys, :journey
+  attr_reader :balance, :journeys, :current_journey
 
-  def initialize(balance = DEFAULT_BALANCE, minimum = MINIMUM_CHARGE)
+  def initialize(balance = DEFAULT_BALANCE, journey = Journey.new)
     @balance = balance
-    @in_journey = false
-    @minimum = minimum
-    @entry_station = entry_station
-    @exit_station = exit_station
     @journeys = []
-    @journey = {}
+    @current_journey = journey
   end
 
   def top_up(amount)
@@ -20,27 +17,37 @@ class Oystercard
     @balance += amount
   end
 
+  # def touch_in(station)
+  #   fail "Insufficient balance to touch in" if @balance < MINIMUM_CHARGE
+  #   @current_journey = Journey.new
+  #   deduct(PENALTY_FARE)
+  #   @current_journey.start_journey(station)
+  # end
+
+  def touch_in(station)
+    fail "Insufficient balance to touch in" if @balance < MINIMUM_CHARGE
+    reset_journey if @current_journey.journey_without_touch_out?
+    @current_journey = Journey.new
+    @current_journey.start_journey(station)
+  end
+
+  def reset_journey
+    deduct(@current_journey.fare)
+  end
+
+  def touch_out(station)
+    @current_journey.journey_end(station)
+    deduct(@current_journey.fare)
+    @journeys << @current_journey
+  end
+
   def deduct(amount)
     @balance -= amount
   end
 
-  def touch_in(station)
-    fail "Insufficient balance to touch in" if @balance < @minimum
-    @entry_station = station
-    @in_journey = true
+  def reinstate_penalty_fare
+    @balance += PENALTY_FARE
   end
 
-  def touch_out(station)
-    deduct(MINIMUM_CHARGE)
-    #@entry_station = nil
-    @exit_station = station
-    @journey[:entry_station] = @entry_station
-    @journey[:exit_station] = @exit_station
-
-  end
-
-  def in_journey?
-    !!entry_station
-  end
 
 end

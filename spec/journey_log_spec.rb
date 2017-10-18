@@ -15,7 +15,15 @@ describe JourneyLog do
   describe '#end_journey' do
     it 'ends a journey' do
       journey_log.start_journey(entry_station)
-      expect(journey_log.end_journey(exit_station)).to eq(exit_station)
+      expect(journey_log.end_journey(exit_station)).to eq(journey_log.journeys)
+    end
+  end
+
+  describe '#log_journeys' do
+    it 'logs a list of past journeys' do
+      journey_log.start_journey(entry_station)
+      journey_log.end_journey(exit_station)
+      expect(journey_log.journeys).to include(journey_log.current_journey)
     end
   end
 

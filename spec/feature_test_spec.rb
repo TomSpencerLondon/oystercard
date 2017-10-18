@@ -1,17 +1,22 @@
-require './lib/oystercard'
-require './lib/journey'
-require './lib/station'
-
-oystercard = Oystercard.new
-journey = Journey.new
-station = Station.new("Aldgate East", 1)
-
-oystercard.top_up(20)
-
-journey.start_journey(station)
-journey.journey_end("Victoria")
-
-journey.fare
+# require './lib/oystercard'
+# require './lib/journey'
+# require './lib/station'
+#
+# oystercard = Oystercard.new
+# journey = Journey.new
+# station = Station.new("Aldgate East", 1)
+#
+# oystercard.top_up(20)
+#
+# oystercard.touch_in()
+#
+# journey.start_journey(station)
+#
+#
+#
+# # journey.journey_end("Victoria")
+# #
+# # journey.fare
 
 
 # # tests for edge case: no touch out

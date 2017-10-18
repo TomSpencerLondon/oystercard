@@ -17,13 +17,6 @@ class Oystercard
     @balance += amount
   end
 
-  # def touch_in(station)
-  #   fail "Insufficient balance to touch in" if @balance < MINIMUM_CHARGE
-  #   @current_journey = Journey.new
-  #   deduct(PENALTY_FARE)
-  #   @current_journey.start_journey(station)
-  # end
-
   def touch_in(station)
     fail "Insufficient balance to touch in" if @balance < MINIMUM_CHARGE
     reset_journey if @current_journey.journey_without_touch_out?

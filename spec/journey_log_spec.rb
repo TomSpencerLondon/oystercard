@@ -27,6 +27,13 @@ describe JourneyLog do
     end
   end
 
+  describe '#fare_charge' do
+    it 'charges a minimum fare for a complete journey' do
+      journey_log.start_journey(entry_station)
+      journey_log.end_journey(exit_station)
+      expect(journey_log.fare_charge).to eq(1)
+    end
+  end
 
 end
 

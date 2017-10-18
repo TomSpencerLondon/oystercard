@@ -14,6 +14,9 @@ class JourneyLog
   def end_journey(exit_station)
     @current_journey.journey_end(exit_station)
     @journeys << @current_journey
+  end
 
+  def fare_charge
+    @current_journey.fare
   end
 end

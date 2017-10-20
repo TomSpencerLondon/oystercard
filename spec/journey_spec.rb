@@ -1,8 +1,8 @@
 require 'journey'
 require 'station'
 describe Journey do
-  let (:entry_station) { Station.new("Aldgate East", 1)}
-  let (:exit_station) { Station.new("Victoria", 1)}
+  let (:entry_station) { double :station, name: 'Aldgate East', zone: 1 }
+  let (:exit_station) { double :station, name: 'Victoria', zone: 1 }
   let(:journey) { described_class.new }
 
   describe '#start' do

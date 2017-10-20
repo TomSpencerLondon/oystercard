@@ -1,10 +1,18 @@
 require 'journey_log'
 
 describe JourneyLog do
-  let(:journey_class) { Journey }
-  let(:entry_station) { Station.new("Aldgate East", 1) }
-  let(:exit_station) { Station.new("Victoria", 1)}
+  let(:journey) { double :journey }
+  let(:journey_class){double :journey_class, new: journey}
+  let(:entry_station) { double :station, name: 'Aldgate East', zone: 1 }
+  let(:exit_station) { double :station, name: 'Victoria', zone: 1 }
   let(:journey_log) { described_class.new(journey_class) }
+  let(:minimum_charge) { 1 }
+
+  before do
+    allow(journey).to receive(:start_journey).and_return(entry_station)
+    allow(journey).to receive(:journey_end).and_return(exit_station)
+    allow(journey).to receive(:fare).and_return(minimum_charge)
+  end
 
   describe '#start_journey' do
     it 'starts a journey' do

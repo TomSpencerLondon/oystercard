@@ -4,7 +4,7 @@ class Oystercard
   MAXIMUM_BALANCE = 90
   DEFAULT_BALANCE = 0
   MINIMUM_CHARGE = 1
-  PENALTY_FARE = 6
+
 
   attr_reader :balance
 
@@ -36,10 +36,5 @@ class Oystercard
   def deduct(amount)
     @balance -= amount
   end
-
-  def reinstate_penalty_fare
-    @balance += PENALTY_FARE
-  end
-
 
 end

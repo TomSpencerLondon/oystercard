@@ -26,8 +26,13 @@ attr_reader :entry_station, :exit_station
     @exit_station = exit_station
   end
 
+  def absolute_zone_difference
+    (@entry_station.zone - @exit_station.zone).abs
+  end
+
+
   def fare
-    return MINIMUM_CHARGE if journey_complete?
+    return MINIMUM_CHARGE + absolute_zone_difference if journey_complete?
     PENALTY_FARE
   end
 

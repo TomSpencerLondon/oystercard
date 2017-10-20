@@ -3,6 +3,8 @@ require 'station'
 describe Journey do
   let (:entry_station) { double :station, name: 'Aldgate East', zone: 1 }
   let (:exit_station) { double :station, name: 'Victoria', zone: 1 }
+  let (:exit_station_zone_2) { double :station, name: 'Vauxhall', zone: 2 }
+  let (:exit_station_zone_3) { double :station, name: 'Clapham Junction', zone: 3 }
   let(:journey) { described_class.new }
 
   describe '#start' do
@@ -37,11 +39,24 @@ describe Journey do
   end
 
   describe '#fare' do
-    it 'charges a fare for a complete journey' do
+    it 'charges a fare for a complete journey in one zone' do
       journey.start_journey(entry_station)
       journey.journey_end(exit_station)
       expect(journey.fare).to eq(Journey::MINIMUM_CHARGE)
     end
+
+    it 'charges a fare of £2 for a complete journey from one zone to the next zone' do
+      journey.start_journey(entry_station)
+      journey.journey_end(exit_station_zone_2)
+      expect(journey.fare).to eq(Journey::MINIMUM_CHARGE + 1)
+    end
+
+    it 'charges a fare of £3 for a complete journey across two zones' do
+      journey.start_journey(entry_station)
+      journey.journey_end(exit_station_zone_3)
+      expect(journey.fare).to eq(Journey::MINIMUM_CHARGE + 2)
+    end
+
   end
 
   describe '#penalty_fare' do
@@ -54,7 +69,6 @@ describe Journey do
       journey.start_journey(entry_station)
       expect(journey.fare).to eq(Journey::PENALTY_FARE)
     end
-
   end
 
 end

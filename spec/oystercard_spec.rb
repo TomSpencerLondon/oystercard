@@ -2,8 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   let(:oyster) { Oystercard.new }
-  let(:entry_station) { double :station }
-  let(:exit_station) { double :station }
+  let(:entry_station) { double :station, name: 'Aldgate East', zone: 1 }
+  let(:exit_station) { double :station, name: 'Victoria', zone: 1 }
 
 
   describe '#top_up tests' do

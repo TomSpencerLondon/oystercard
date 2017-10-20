@@ -35,10 +35,6 @@ describe Oystercard do
         oyster.top_up(10)
         oyster.touch_in(entry_station)
       end
-
-      it "remembers the entry station after touch in" do
-        expect(oyster.current_journey.entry_station).to eq(entry_station)
-      end
     end
 
     context 'not topped up' do
@@ -65,17 +61,6 @@ describe Oystercard do
         expect(oyster.balance).to eq(9)
       end
 
-      it "stores the exit station" do
-        oyster.touch_out(exit_station)
-        expect(oyster.current_journey.exit_station).to eq(exit_station)
-      end
-    end
-  end
-
-  describe '#journeys' do
-
-    it 'has an empty list of journeys' do
-      expect(oyster.journeys).to be_empty
     end
   end
 
